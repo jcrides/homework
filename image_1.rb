@@ -10,6 +10,9 @@ class Image
   def output_image
     @image.each { |row| puts row.join }
   end
+
+  # can be to_s
+  
 end
 
 image = Image.new([

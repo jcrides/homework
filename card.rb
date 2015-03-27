@@ -12,6 +12,10 @@ class Card
     puts "The #{@rank} of #{@suit}"
   end
 
+  def to_s
+    "The #{@rank} of #{@suit}"
+  end
+
   def self.random_card
     Card.new(rand(10), :spades)
   end
@@ -34,10 +38,10 @@ class Deck
   end
 
   def output
-    @cards.each { |card| card.output_card }
+    @cards.each { |card| puts card }
   end
 
-  def shuffle
+  def shuffle!
     @cards.shuffle!
   end
 
