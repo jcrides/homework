@@ -9,9 +9,9 @@ class Image
     @max_y = @image.size - 1
   end
 
-  # loop through the rows and print them joined
-  def output_image
-    @image.each { |row| puts row.join }
+  # join all the rows separated by newlines
+  def to_s
+    @image.map { |row| row.join }.join("\n")
   end
 
   # set pixels left, right, up and down of a '1' to 1 unless out of bounds
@@ -57,14 +57,14 @@ image = Image.new([
   [0, 0, 0, 0],
   [0, 0, 1, 0],
   [0, 0, 0, 0],
-  [0, 1, 0, 0],
   [0, 0, 0, 0],
+  [0, 1, 0, 0],
   [0, 0, 0, 0]
 ])
 
 puts "Start image"
-image.output_image
+puts image
 puts "Blurring"
 image.blur
 puts "Blurred image"
-image.output_image
+puts image
