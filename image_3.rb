@@ -24,7 +24,8 @@ class Image
   private
 
   # calculates and sets ones in a cardinal direction from a pixel
-  def spread(coords, distance)
+  # then spreads out on the other axis
+  def spread(pixel, distance)
     xforms = [{:pri => 'x', :sec => 'y', :mod => '-'},
               {:pri => 'x', :sec => 'y', :mod => '+'},
               {:pri => 'y', :sec => 'x', :mod => '-'},
@@ -32,7 +33,28 @@ class Image
 
     xforms.each do |xform|
       distance.times do |i|
-        set_to_one(coords)
+        if xform[:pri] == 'y'
+          pcoords = { :y => pixel[:y] + "#{xform[:mod]}#{i + 1}".to_i,
+                      :x => pixel[:x] }
+        else
+          pcoords = { :x => pixel[:x] + "#{xform[:mod]}#{i + 1}".to_i,
+                      :y => pixel[:y] }
+        end
+        set_to_one(pcoords)
+        (distance - (i + 1)).times do |j|
+          ['+', '-'].each do |sign|
+            if xform[:sec] == 'y'
+              scoords = { :y => pcoords[:y] + "#{sign}#{j + 1}".to_i,
+                          :x => pcoords[:x] }
+            else
+              scoords = { :x => pcoords[:x] + "#{sign}#{j + 1}".to_i,
+                          :y => pcoords[:y] }
+            end
+            set_to_one(scoords)
+          end
+        end
+      end
+    end
   end
 
   # returns an array with coordinates of the 1's
@@ -59,17 +81,22 @@ class Image
 end
 
 image = Image.new([
-  [0, 0, 0, 0],
-  [0, 0, 1, 0],
-  [0, 0, 0, 0],
-  [0, 1, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0]
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 1]
 ])
 
 puts "Start image"
 puts image
 puts "Blurring"
-image.blur 1
+image.blur 2
 puts "Blurred image"
 puts image
