@@ -23,21 +23,15 @@ end
 def empty_list(list_node, stack)
   next_node = list_node.next_node
   stack.push(list_node)
-  if next_node.nil?
-    return
-  else
-    empty_list(next_node, stack)
-  end
+  return if next_node.nil?
+  empty_list(next_node, stack)
 end
 
 def build_list(list_node, stack)
   next_node = stack.pop
-  if next_node.nil?
-    return
-  else
-    list_node.next_node = next_node
-    build_list(next_node, stack)
-  end
+  return if next_node.nil?
+  list_node.next_node = next_node
+  build_list(next_node, stack)
 end
 
 def reverse(list_node)
@@ -46,8 +40,7 @@ def reverse(list_node)
 
   first_node = stack.pop
   build_list(first_node, stack)
-  return first_node
-
+  first_node
 end
 
 class Stack
