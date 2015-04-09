@@ -23,25 +23,21 @@ def print_values(list_node)
 end
 
 def reverse_list(list_node, previous=nil)
-  if previous.nil?
-    previous = list_node
-    list_node = previous.next_node
-    previous.next_node = nil
-    reverse_list(list_node, previous)
-  elsif list_node.next_node.nil?
-    list_node.next_node = previous
-    return list_node
-  else
-    next_node = list_node.next_node if list_node != nil
-    list_node.next_node = previous if list_node != nil
-    previous = list_node
-    list_node = next_node
-#    binding.pry
-    return list_node if next_node.next_node == nil
-    reverse_list(next_node, previous) unless list_node.nil?
+  until list_node.next_node == nil
+    if previous.nil?
+      previous = list_node
+      list_node = previous.next_node
+      previous.next_node = nil
+    else
+      next_node = list_node.next_node if list_node != nil
+      list_node.next_node = previous if list_node != nil
+      previous = list_node
+      list_node = next_node
+    end
   end
-  puts "returning outside"
-  return list_node
+
+  list_node.next_node = previous if list_node.next_node == nil
+  list_node
 end
 
 
