@@ -41,8 +41,8 @@ def reverse_list(list_node, previous=nil)
     return list_node if next_node.next_node == nil
     reverse_list(next_node, previous) unless list_node.nil?
   end
-  puts "returning outside"
-  return list_node
+  list_node.next_node = previous
+  list_node
 end
 
 
