@@ -22,6 +22,7 @@ def print_values(list_node)
   end
 end
 
+# returning only last 2 nodes of list, maybe issue with unwrapping recusive calls
 def reverse_list(list_node, previous=nil)
   if previous.nil?
     previous = list_node
