@@ -24,25 +24,22 @@ end
 
 # returning only last 2 nodes of list, maybe issue with unwrapping recusive calls
 def reverse_list(list_node, previous=nil)
-  if previous.nil?
+  if previous.nil? #initial case
+    puts "initial case"
     previous = list_node
     list_node = previous.next_node
     previous.next_node = nil
-    reverse_list(list_node, previous)
-  elsif list_node.next_node.nil?
+    return reverse_list(list_node, previous)
+  elsif list_node.next_node.nil? #terminal case
+    puts "terminal case"
     list_node.next_node = previous
     return list_node
-  else
-    next_node = list_node.next_node if list_node != nil
-    list_node.next_node = previous if list_node != nil
-    previous = list_node
-    list_node = next_node
-#    binding.pry
-    return list_node if next_node.next_node == nil
-    reverse_list(next_node, previous) unless list_node.nil?
   end
+  puts "outside "
+  next_node = list_node.next_node
   list_node.next_node = previous
-  list_node
+  previous = list_node
+  reverse_list(next_node, previous)
 end
 
 
