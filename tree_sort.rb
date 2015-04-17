@@ -43,18 +43,6 @@ class Tree
     @node_count
   end
 
-  def extract_nodes
-    sortedarr = []
-    3.times do
-      if sortedarr.last.nil? || sortedarr.last < @root.payload
-        sortedarr << self.find_low(@root, sortedarr.last)
-      else
-        sortedarr << self.find_high(@root, sortedarr.last)
-      end
-    end
-    sortedarr
-  end
-
   def sort
     Tree.sort(@root)
   end
@@ -74,32 +62,6 @@ class Tree
     sorted_right = sort(node.right)
 
     sorted_left + trunk + sorted_right
-  end
-
-  def find_low(node, value)
-    puts "sorting low for #{value.inspect}"
-    if value.nil?                         # array is empty find lowest value
-      until node.left.nil?
-        node = node.left
-      end
-      return node.payload
-    else                                  # array has at least 1 value
-      until node.left.payload == value
-        node = node.left
-      end
-      if node.left.right                  # is there a higher value, find it
-        return find_high(node.left, value)
-      else                                # if not return the node
-        return node.payload
-      end
-    end
-    puts "low"
-  end
-
-  def find_high(node, value)
-    puts "sorting high for #{value}"
-    node = node.right
-    return node.payload if node.right.nil? && node.left.nil?
   end
 
   def find_node(node, search_value)
