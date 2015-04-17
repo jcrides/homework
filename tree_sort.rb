@@ -55,6 +55,27 @@ class Tree
     sortedarr
   end
 
+  def sort
+    Tree.sort(@root)
+  end
+
+  def self.sort(node)
+    # traverse left side of tree
+    if node.nil?
+      return []
+    end
+
+    sorted_left = sort(node.left)
+
+    # deal with trunk
+    trunk = [node.payload]
+
+    # deal with right side of tree
+    sorted_right = sort(node.right)
+
+    sorted_left + trunk + sorted_right
+  end
+
   def find_low(node, value)
     puts "sorting low for #{value.inspect}"
     if value.nil?                         # array is empty find lowest value
@@ -105,7 +126,7 @@ nodes = [7, 4, 9, 1, 6, 14, 10]
 tree = Tree.new()
 
 nodes.each { |n| tree.add_node(n) }
-sarr = tree.extract_nodes
+sarr = tree.sort
 puts sarr.inspect
 
 puts tree.size
