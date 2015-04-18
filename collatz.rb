@@ -29,28 +29,34 @@ def collatz_tri(num)
 end
 
 def collatz_recur(num)
-#  count = 0
   seq = []
-  return seq += [1] if num == 1
+  return [] if num == 1
+
   if num % 2 == 0
     seq += [num / 2]
-    unless (num / 2) == 1
-      seq += [collatz_recur(num / 2)]
-      return seq.flatten
-    end
+    return seq += collatz_recur(num / 2)
   else
     seq += [num * 3 + 1]
-    seq += [collatz_recur(num * 3 + 1)] # unless num % 2 == 0
-    return seq.flatten
+    return seq += collatz_recur(num * 3 + 1)
   end
-  seq
 end
 
-max = 1000
+def calc_seq(n,s=0)
+  if n == 1
+    return s
+  elsif n & 1 == 0
+    return calc_seq(n/2,s+1)
+  else
+    return calc_seq(3*n+1,s+1)
+  end
+end
+
+max = 10000
 Benchmark.bm do |x|
   x.report('if else') { (1..max).each { |i| collatz_if(i) } }
   x.report('trinary') { (1..max).each { |i| collatz_tri(i) } }
-  x.report('recursive') { (1..max).each { |i| collatz_recur(i).flatten.unshift(i) } }
+  x.report('recursive') { (1..max).each { |i| calc_seq(i) } }
+  x.report('recursive') { (1..max).each { |i| collatz_recur(i).unshift(i) } }
 end
 
 longest = [0, 0]
@@ -60,4 +66,4 @@ longest = [0, 0]
 # end
 
 puts longest.inspect
-puts collatz_recur(837799).flatten.unshift(837799).length
+puts collatz_recur(3).unshift(3).inspect
