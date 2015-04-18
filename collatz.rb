@@ -28,16 +28,36 @@ def collatz_tri(num)
   [num, iters]
 end
 
-max = 1000000
+def collatz_recur(num)
+#  count = 0
+  seq = []
+  return seq += [1] if num == 1
+  if num % 2 == 0
+    seq += [num / 2]
+    unless (num / 2) == 1
+      seq += [collatz_recur(num / 2)]
+      return seq.flatten
+    end
+  else
+    seq += [num * 3 + 1]
+    seq += [collatz_recur(num * 3 + 1)] # unless num % 2 == 0
+    return seq.flatten
+  end
+  seq
+end
+
+max = 1000
 Benchmark.bm do |x|
   x.report('if else') { (1..max).each { |i| collatz_if(i) } }
   x.report('trinary') { (1..max).each { |i| collatz_tri(i) } }
+  x.report('recursive') { (1..max).each { |i| collatz_recur(i).flatten.unshift(i) } }
 end
 
 longest = [0, 0]
-(1..max).each do |num|
-  col_len = collatz_if(num + 1)
-  longest = col_len if col_len[1] > longest[1]
-end
+# (1..max).each do |num|
+#   col_len = collatz_if(num + 1)
+#   longest = col_len if col_len[1] > longest[1]
+# end
 
 puts longest.inspect
+puts collatz_recur(837799).flatten.unshift(837799).length
