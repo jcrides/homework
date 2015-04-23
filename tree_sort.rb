@@ -48,11 +48,10 @@ class Tree
   end
 
   def self.sort(node)
-    # traverse left side of tree
+    # deal with left side of tree
     if node.nil?
       return []
     end
-
     sorted_left = sort(node.left)
 
     # deal with trunk
